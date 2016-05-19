@@ -1,0 +1,16 @@
+{
+  "name": "flashcard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "watchify src/app.js -o public/bundle.js -t [ babelify --presets [ react es2015 ] ]",
+    "server": "cd public; live-server --port=1234 --entry-file=index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "live-server": "^1.0.0"
+  }
+}
