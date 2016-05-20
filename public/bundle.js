@@ -21,7 +21,7 @@ var store = Redux.createStore(Redux.combineReducers({
 var App = function App(props) {
   return React.createElement(
     'div',
-    { 'class': 'app' },
+    { className: 'app' },
     React.createElement(
       'h1',
       null,
@@ -32,10 +32,41 @@ var App = function App(props) {
   );
 };
 
+var Sidebar = React.createClass({
+  displayName: 'Sidebar',
+  render: function render() {
+    var props = this.props;
+
+    return React.createElement(
+      'div',
+      { className: 'sidebar' },
+      React.createElement(
+        'h2',
+        null,
+        'All decks'
+      ),
+      React.createElement(
+        'ul',
+        null,
+        props.decks.map(function (deck, i) {
+          return React.createElement(
+            'li',
+            { key: i },
+            ' ',
+            deck.name,
+            ' '
+          );
+        })
+      ),
+      props.addingDeck && React.createElement('input', { ref: 'add' })
+    );
+  }
+});
+
 ReactDOM.render(React.createElement(
   App,
   null,
-  ' Holi '
+  React.createElement(Sidebar, { decks: [{ name: 'Deck 1' }], addingDeck: false })
 ), document.getElementById('root'));
 
 },{}]},{},[1]);
