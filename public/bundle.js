@@ -25,11 +25,17 @@ var App = function App(props) {
     React.createElement(
       'h1',
       null,
-      'Hello World :3'
+      ' ',
+      props.children,
+      ' '
     )
   );
 };
 
-ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
+ReactDOM.render(React.createElement(
+  App,
+  null,
+  ' Holi '
+), document.getElementById('root'));
 
 },{}]},{},[1]);

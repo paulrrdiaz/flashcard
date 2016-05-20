@@ -18,10 +18,10 @@ const store = Redux.createStore(Redux.combineReducers({
 const App = (props) => {
   return (
     <div class='app'>
-      <h1>Hello World :3</h1>
+      <h1> { props.children } </h1>
     </div>
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App> Holi </App>, document.getElementById('root'));
 
