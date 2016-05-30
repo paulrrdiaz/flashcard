@@ -1,24 +1,45 @@
+const addDeck = name => ({ type: 'ADD_CHECK', data: name });
+const showAddDeck = () => ({ type: 'SHOW_ADD_CHECK' });
+const hideAddDeck = () => ({ type: 'HIDE_ADD_DECK' });
+
 const cards = (state, action) => {
   switch (action.type) {
     case 'ADD_CARD':
-      let newCard = Object.assign({}, action.data, {
-        score: 1,
-        id: +new Date
-      });
-
+      let newCard = Object.assign({}, action.data, { score: 1, id: +new Date()});
       return state.concat([newCard]);
     default:
       return state || [];
   }
+};
+
+const decks = (state, action) => {
+  switch (action.type) {
+    case 'ADD_CHECK':
+      let newDesk = { name: action.data, id: +new Date }
+      return state.concat([newDeck]);
+    default:
+      return state || [];
+  }
+};
+
+const addingDeck = (state, action) => {
+  switch (action.type) {
+    case 'SHOW_ADD_CHECK': return true;
+    case 'HIDE_ADD_CHECK': return false;
+    default: return !!state;
+  }
 }
+;
 const store = Redux.createStore(Redux.combineReducers({
-  cards
+  cards,
+  decks,
+  addingDeck
 }));
 
 const App = (props) => {
   return (
     <div className='app'>
-      <h1> {props.children} </h1>
+      {props.children}
     </div>
   )
 }
@@ -43,7 +64,16 @@ const Sidebar = React.createClass({
   }
 })
 
-ReactDOM.render((<App>
-  <Sidebar decks={[ {name: 'Deck 1'} ]} addingDeck={false} />                
-</App>), document.getElementById('root'));
+function run() {
+  let state = store.getState();
+
+  ReactDOM.render((<App>
+    <Sidebar decks={state.decks} addingDeck={state.addingDeck} />                
+  </App>), document.getElementById('root'));
+  
+}
+
+run();
+
+store.subscribe(run);
 

@@ -1,34 +1,57 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var addDeck = function addDeck(name) {
+  return { type: 'ADD_CHECK', data: name };
+};
+var showAddDeck = function showAddDeck() {
+  return { type: 'SHOW_ADD_CHECK' };
+};
+var hideAddDeck = function hideAddDeck() {
+  return { type: 'HIDE_ADD_DECK' };
+};
+
 var cards = function cards(state, action) {
   switch (action.type) {
     case 'ADD_CARD':
-      var newCard = Object.assign({}, action.data, {
-        score: 1,
-        id: +new Date()
-      });
-
+      var newCard = Object.assign({}, action.data, { score: 1, id: +new Date() });
       return state.concat([newCard]);
     default:
       return state || [];
   }
 };
+
+var decks = function decks(state, action) {
+  switch (action.type) {
+    case 'ADD_CHECK':
+      var newDesk = { name: action.data, id: +new Date() };
+      return state.concat([newDeck]);
+    default:
+      return state || [];
+  }
+};
+
+var addingDeck = function addingDeck(state, action) {
+  switch (action.type) {
+    case 'SHOW_ADD_CHECK':
+      return true;
+    case 'HIDE_ADD_CHECK':
+      return false;
+    default:
+      return !!state;
+  }
+};
 var store = Redux.createStore(Redux.combineReducers({
-  cards: cards
+  cards: cards,
+  decks: decks,
+  addingDeck: addingDeck
 }));
 
 var App = function App(props) {
   return React.createElement(
     'div',
     { className: 'app' },
-    React.createElement(
-      'h1',
-      null,
-      ' ',
-      props.children,
-      ' '
-    )
+    props.children
   );
 };
 
@@ -63,10 +86,18 @@ var Sidebar = React.createClass({
   }
 });
 
-ReactDOM.render(React.createElement(
-  App,
-  null,
-  React.createElement(Sidebar, { decks: [{ name: 'Deck 1' }], addingDeck: false })
-), document.getElementById('root'));
+function run() {
+  var state = store.getState();
+
+  ReactDOM.render(React.createElement(
+    App,
+    null,
+    React.createElement(Sidebar, { decks: state.decks, addingDeck: state.addingDeck })
+  ), document.getElementById('root'));
+}
+
+run();
+
+store.subscribe(run);
 
 },{}]},{},[1]);
