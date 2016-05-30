@@ -5,7 +5,7 @@ var addDeck = function addDeck(name) {
   return { type: 'ADD_CHECK', data: name };
 };
 var showAddDeck = function showAddDeck() {
-  return { type: 'SHOW_ADD_CHECK' };
+  return { type: 'SHOW_ADD_DECK' };
 };
 var hideAddDeck = function hideAddDeck() {
   return { type: 'HIDE_ADD_DECK' };
@@ -24,7 +24,7 @@ var cards = function cards(state, action) {
 var decks = function decks(state, action) {
   switch (action.type) {
     case 'ADD_CHECK':
-      var newDesk = { name: action.data, id: +new Date() };
+      var newDeck = { name: action.data, id: +new Date() };
       return state.concat([newDeck]);
     default:
       return state || [];
@@ -33,9 +33,9 @@ var decks = function decks(state, action) {
 
 var addingDeck = function addingDeck(state, action) {
   switch (action.type) {
-    case 'SHOW_ADD_CHECK':
+    case 'SHOW_ADD_DECK':
       return true;
-    case 'HIDE_ADD_CHECK':
+    case 'HIDE_ADD_DECK':
       return false;
     default:
       return !!state;
@@ -88,7 +88,7 @@ var Sidebar = React.createClass({
 
 function run() {
   var state = store.getState();
-
+  console.log(state);
   ReactDOM.render(React.createElement(
     App,
     null,
@@ -99,5 +99,15 @@ function run() {
 run();
 
 store.subscribe(run);
+
+window.show = function () {
+  return store.dispatch(showAddDeck());
+};
+window.hide = function () {
+  return store.dispatch(hideAddDeck());
+};
+window.add = function () {
+  return store.dispatch(addDeck(new Date().toString()));
+};
 
 },{}]},{},[1]);
