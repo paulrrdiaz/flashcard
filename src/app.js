@@ -1,6 +1,4 @@
-const addDeck = name => ({ type: 'ADD_CHECK', data: name });
-const showAddDeck = () => ({ type: 'SHOW_ADD_DECK' });
-const hideAddDeck = () => ({ type: 'HIDE_ADD_DECK' });
+import { addDeck, showAddDeck, hideAddDeck } from './actions.js';
 
 const cards = (state, action) => {
   switch (action.type) {
