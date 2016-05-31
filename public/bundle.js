@@ -17,43 +17,15 @@ var hideAddDeck = exports.hideAddDeck = function hideAddDeck() {
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var _actions = require('./actions.js');
+var _actions = require('./actions');
 
-var cards = function cards(state, action) {
-  switch (action.type) {
-    case 'ADD_CARD':
-      var newCard = Object.assign({}, action.data, { score: 1, id: +new Date() });
-      return state.concat([newCard]);
-    default:
-      return state || [];
-  }
-};
+var _reducers = require('./reducers');
 
-var decks = function decks(state, action) {
-  switch (action.type) {
-    case 'ADD_CHECK':
-      var newDeck = { name: action.data, id: +new Date() };
-      return state.concat([newDeck]);
-    default:
-      return state || [];
-  }
-};
+var reducers = _interopRequireWildcard(_reducers);
 
-var addingDeck = function addingDeck(state, action) {
-  switch (action.type) {
-    case 'SHOW_ADD_DECK':
-      return true;
-    case 'HIDE_ADD_DECK':
-      return false;
-    default:
-      return !!state;
-  }
-};
-var store = Redux.createStore(Redux.combineReducers({
-  cards: cards,
-  decks: decks,
-  addingDeck: addingDeck
-}));
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var store = Redux.createStore(Redux.combineReducers(reducers));
 
 var App = function App(props) {
   return React.createElement(
@@ -140,4 +112,41 @@ run();
 
 store.subscribe(run);
 
-},{"./actions.js":1}]},{},[2]);
+},{"./actions":1,"./reducers":3}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var cards = exports.cards = function cards(state, action) {
+  switch (action.type) {
+    case 'ADD_CARD':
+      var newCard = Object.assign({}, action.data, { score: 1, id: +new Date() });
+      return state.concat([newCard]);
+    default:
+      return state || [];
+  }
+};
+
+var decks = exports.decks = function decks(state, action) {
+  switch (action.type) {
+    case 'ADD_CHECK':
+      var newDeck = { name: action.data, id: +new Date() };
+      return state.concat([newDeck]);
+    default:
+      return state || [];
+  }
+};
+
+var addingDeck = exports.addingDeck = function addingDeck(state, action) {
+  switch (action.type) {
+    case 'SHOW_ADD_DECK':
+      return true;
+    case 'HIDE_ADD_DECK':
+      return false;
+    default:
+      return !!state;
+  }
+};
+
+},{}]},{},[2]);
