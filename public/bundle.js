@@ -20493,11 +20493,58 @@ var _reducers = require('./reducers');
 
 var reducers = _interopRequireWildcard(_reducers);
 
+var _App = require('./components/App');
+
+var _App2 = _interopRequireDefault(_App);
+
+var _Sidebar = require('./components/Sidebar');
+
+var _Sidebar2 = _interopRequireDefault(_Sidebar);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = Redux.createStore(Redux.combineReducers(reducers));
+
+function run() {
+  var state = store.getState();
+  console.log(state);
+  _reactDom2.default.render(_react2.default.createElement(
+    _App2.default,
+    null,
+    _react2.default.createElement(_Sidebar2.default, {
+      decks: state.decks,
+      addingDeck: state.addingDeck,
+      addDeck: function addDeck(name) {
+        return store.dispatch((0, _actions.addDeck)(name));
+      },
+      showAddDeck: function showAddDeck() {
+        return store.dispatch((0, _actions.showAddDeck)());
+      },
+      hideAddDeck: function hideAddDeck() {
+        return store.dispatch((0, _actions.hideAddDeck)());
+      }
+    })
+  ), document.getElementById('root'));
+}
+
+run();
+
+store.subscribe(run);
+
+},{"./actions":181,"./components/App":183,"./components/Sidebar":184,"./reducers":185,"react":166,"react-dom":1,"redux":172}],183:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = function App(props) {
   return _react2.default.createElement(
@@ -20506,6 +20553,25 @@ var App = function App(props) {
     props.children
   );
 };
+
+exports.default = App;
+
+},{"react":166}],184:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Sidebar = _react2.default.createClass({
   displayName: 'Sidebar',
@@ -20558,33 +20624,9 @@ var Sidebar = _react2.default.createClass({
   }
 });
 
-function run() {
-  var state = store.getState();
-  console.log(state);
-  _reactDom2.default.render(_react2.default.createElement(
-    App,
-    null,
-    _react2.default.createElement(Sidebar, {
-      decks: state.decks,
-      addingDeck: state.addingDeck,
-      addDeck: function addDeck(name) {
-        return store.dispatch((0, _actions.addDeck)(name));
-      },
-      showAddDeck: function showAddDeck() {
-        return store.dispatch((0, _actions.showAddDeck)());
-      },
-      hideAddDeck: function hideAddDeck() {
-        return store.dispatch((0, _actions.hideAddDeck)());
-      }
-    })
-  ), document.getElementById('root'));
-}
+exports.default = Sidebar;
 
-run();
-
-store.subscribe(run);
-
-},{"./actions":181,"./reducers":183,"react":166,"react-dom":1,"redux":172}],183:[function(require,module,exports){
+},{"react":166,"react-dom":1}],185:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
