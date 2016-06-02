@@ -1,9 +1,10 @@
 import React from 'react';
+import Sidebar from './Sidebar';
 
 const App = (props) => {
   return (
     <div className='app'>
-      {props.children}
+      <Sidebar />
     </div>
   )
 }
