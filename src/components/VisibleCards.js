@@ -1,8 +1,11 @@
 import React from 'react';
 
-const Cards = () => {
+const Cards = ({ children }) => {
   return (
-    <div>Holi</div>
+    <div>
+      All decks
+      { children }
+    </div>
   )
 }
 
