@@ -10,7 +10,9 @@ import App from './components/App';
 import Sidebar from './components/Sidebar';
 import VisibleCards from './components/VisibleCards';
 
-const store = createStore(combineReducers(reducers));
+import * as localStore from './localStore';
+
+const store = createStore(combineReducers(reducers), localStore.get());
 const history = syncHistoryWithStore(browserHistory, store);
 
 /*
@@ -20,6 +22,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 function run() {
   let state = store.getState();
+  localStore.set(state, ['decks', 'cards']);
   ReactDOM.render((
     <Provider store={store}>
       <Router history={history}>
