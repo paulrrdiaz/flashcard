@@ -10,6 +10,7 @@ import App from './components/App';
 import Sidebar from './components/Sidebar';
 import VisibleCards from './components/VisibleCards';
 import NewCardModal from './components/NewCardModal';
+import EditCardModal from './components/EditCardModal';
 
 import * as localStore from './localStore';
 
@@ -30,6 +31,7 @@ function run() {
         <Route path='/' component={App}>
           <Route path='/deck/:deckId' component={VisibleCards}>
             <Route path='/deck/:deckId/new' component={NewCardModal} />
+            <Route path='/deck/:deckId/edit/:cardId' component={EditCardModal} />
           </Route>
         </Route>
       </Router>
