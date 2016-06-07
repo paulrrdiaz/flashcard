@@ -11,7 +11,7 @@ import Sidebar from './components/Sidebar';
 import VisibleCards from './components/VisibleCards';
 import NewCardModal from './components/NewCardModal';
 import EditCardModal from './components/EditCardModal';
-
+import StudyModal from './components/StudyModal';
 import * as localStore from './localStore';
 
 const store = createStore(combineReducers(reducers), localStore.get());
@@ -19,7 +19,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 /*
   This line help to solve 
-  const routes = (<Route path='/' component={App}></Route>)
+  const routes = (<Route path='/' component={App ></Route>)
 */
 
 function run() {
@@ -32,6 +32,7 @@ function run() {
           <Route path='/deck/:deckId' component={VisibleCards}>
             <Route path='/deck/:deckId/new' component={NewCardModal} />
             <Route path='/deck/:deckId/edit/:cardId' component={EditCardModal} />
+            <Route path='/deck/:deckId/study' component={StudyModal} />
           </Route>
         </Route>
       </Router>
