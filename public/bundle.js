@@ -26736,6 +26736,9 @@ var deleteCard = exports.deleteCard = function deleteCard(cardId) {
 var filterCards = exports.filterCards = function filterCards(query) {
   return { type: 'FILTER_CARDS', data: query };
 };
+var setShowBack = exports.setShowBack = function setShowBack(back) {
+  return { type: 'SHOW_BACK', data: back };
+};
 
 },{}],262:[function(require,module,exports){
 'use strict';
@@ -27184,9 +27187,158 @@ var Sidebar = _react2.default.createClass({
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Sidebar);
 
 },{"../actions":261,"react":246,"react-dom":2,"react-redux":5,"react-router":50}],269:[function(require,module,exports){
-"use strict";
+'use strict';
 
-},{}],270:[function(require,module,exports){
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _reactRedux = require('react-redux');
+
+var _actions = require('../actions');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MS_IN_DAY = 86400000;
+
+var mapStateToProps = function mapStateToProps(_ref, _ref2) {
+  var cards = _ref.cards;
+  var showBack = _ref.showBack;
+  var deckId = _ref2.params.deckId;
+  return {
+    showBack: showBack,
+    deckId: deckId,
+    card: cards.filter(function (card) {
+      return card.deckId === deckId && (!card.lastStudiedOn || (new Date() - card.lastStudiedOn) / MS_IN_DAY >= card.score);
+    })[0]
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    onStudied: function onStudied(cardId, score) {
+      var now = new Date();
+      now.setHours(0, 0, 0, 0);
+      dispatch((0, _actions.updateCard)({ id: cardId, score: score, lastStudiedOn: +now }));
+      dispatch((0, _actions.setShowBack)());
+    },
+    onFlip: function onFlip() {
+      return dispatch((0, _actions.setShowBack)(true));
+    }
+  };
+};
+
+var StudyModal = function StudyModal(_ref3) {
+  var card = _ref3.card;
+  var showBack = _ref3.showBack;
+  var onFlip = _ref3.onFlip;
+  var deckId = _ref3.deckId;
+  var onStudied = _ref3.onStudied;
+
+
+  var body = _react2.default.createElement(
+    'div',
+    { className: 'no-cards' },
+    _react2.default.createElement(
+      'p',
+      null,
+      ' You have no cards to study in this deck right now. Good job! '
+    )
+  );
+
+  if (card) {
+    body = _react2.default.createElement(
+      'div',
+      { className: 'study-card' },
+      _react2.default.createElement(
+        'div',
+        { className: showBack ? 'front hide' : 'front' },
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'p',
+            null,
+            ' ',
+            card.front,
+            ' '
+          )
+        ),
+        _react2.default.createElement(
+          'button',
+          { onClick: onFlip },
+          ' Flip '
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: showBack ? 'back' : 'back hide' },
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'p',
+            null,
+            ' ',
+            card.back,
+            ' '
+          )
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          ' How did you do? '
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick(e) {
+                return onStudied(card.id, Math.max(card.score - 1, 1));
+              } },
+            ' Poorly '
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick(e) {
+                return onStudied(card.id, card.score);
+              } },
+            ' Okay '
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick(e) {
+                return onStudied(card.id, Math.min(card.score + 1, 3));
+              } },
+            ' Great '
+          )
+        )
+      )
+    );
+  }
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'modal study-modal' },
+    _react2.default.createElement(
+      _reactRouter.Link,
+      { className: 'btn close', to: '/deck/' + deckId },
+      ' x '
+    ),
+    body
+  );
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StudyModal);
+
+},{"../actions":261,"react":246,"react-redux":5,"react-router":50}],270:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27338,6 +27490,15 @@ var set = exports.set = function set(state, props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var showBack = exports.showBack = function showBack(state, action) {
+  switch (action.type) {
+    case 'SHOW_BACK':
+      return action.data || false;
+    default:
+      return state || false;
+  }
+};
+
 var cardFilter = exports.cardFilter = function cardFilter(state, action) {
   switch (action.type) {
     case 'FILTER_CARDS':
